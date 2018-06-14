@@ -20,24 +20,26 @@ class LeNet:
 			inputShape = (depth, height, width)
 
 		# first set of CONV => RELU => POOL layers
-		model.add(Conv2D(20, (18, 11), padding="same",
+		model.add(Conv2D(10, (12, 11), padding="same",
 			input_shape=inputShape))
 		model.add(Activation("relu"))
 		model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
 
 		# second set of CONV => RELU => POOL layers
-		model.add(Conv2D(50, (9, 4), padding="same"))
+		model.add(Conv2D(20, (6, 2), padding="same"))
 		model.add(Activation("relu"))
 		model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
 
 		# third set of CONV => RELU => POOL layers
-		model.add(Conv2D(80, (3, 2), padding="same"))
+		model.add(Conv2D(40, (3, 2), padding="same"))
 		model.add(Activation("relu"))
 		model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
 
 		# first (and only) set of FC => RELU layers
 		model.add(Flatten())
-		model.add(Dense(2860))
+		model.add(Dense(2**11)) 
+		# 2**11 = 2048
+		# 2**12 = 4096
 		# el dense debe ser en proporcion de 1:4 respecto al flatten
 		# flatten 1
 		# dense 4

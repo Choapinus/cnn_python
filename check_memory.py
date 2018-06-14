@@ -1,10 +1,3 @@
-# USAGE
-# python train_network.py --dataset images --model santa_not_santa.model
-
-# set the matplotlib backend so figures can be saved in the background
-import matplotlib
-matplotlib.use("Agg")
-
 # import the necessary packages
 from keras.preprocessing.image import ImageDataGenerator
 from keras.optimizers import Adam, SGD
@@ -21,6 +14,7 @@ import random
 import cv2
 import os
 from contextlib import redirect_stdout
+from time import sleep
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -39,8 +33,8 @@ args = vars(ap.parse_args())
 # initialize the number of epochs to train for, initia learning rate,
 # and batch size
 EPOCHS = args["epochs"] # 25
-INIT_LR = 1e-4
-BS = 40 # debe ser numero cuadrado sino toma menos imagenes
+INIT_LR = 1e-2
+BS = 20 # debe ser numero cuadrado sino toma menos imagenes
 
 # initialize the data and labels
 print("[INFO] loading " + str(args["n_images"]) + " images...")
@@ -71,11 +65,9 @@ print("[INFO] done with images")
 # end andresin
 
 
+print("[INFO] creating data and labels")
 # grab the image paths and randomly shuffle them
 # imagePaths = sorted(list(paths.list_images(args["dataset"])))
-
-print("[INFO] making data and labels")
-
 random.seed(42)
 random.shuffle(imagePaths)
 
@@ -107,12 +99,7 @@ print("[INFO] done with data and labels")
 (trainX, testX, trainY, testY) = train_test_split(data,
 	labels, test_size=0.2, random_state=42)
 
-print("[INFO] deleting stuff")
-
-del data, labels, male_im, female_im, all_images, imagePath
-
-print("[INFO] done")
-
+print("data", data.shape)
 print("trainX", trainX.shape)
 print("testX", testX.shape)
 
@@ -120,71 +107,18 @@ print("testX", testX.shape)
 trainY = to_categorical(trainY, num_classes=2)
 testY = to_categorical(testY, num_classes=2)
 
-# construct the image generator for data augmentation
-aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1,
-	height_shift_range=0.1, shear_range=0.2, zoom_range=0.2,
-	horizontal_flip=True, fill_mode="nearest")
+print("Before deleting data")
 
-# initialize the model
-print("[INFO] compiling model...")
-# model = LeNet.build(width=178, height=218, depth=3, classes=2)
-model = LeNet.build(width=178//2, height=218//2, depth=3, classes=2)
-# model.summary()
-# opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
-# deberia ser SGD porque converge muy rapido
-# en keras Adam tiene otros optimizers
+sleep(5)
 
-opt = SGD(lr=INIT_LR, momentum=0.9)
+# del data and labels
 
-model.compile(loss="binary_crossentropy", optimizer=opt,
-	metrics=["accuracy"])
+del data
+del labels
 
-tbcallback = TensorBoard(log_dir='./graph', histogram_freq=0, write_graph=True, write_images=True)
-# para tensorflow
-# tensorboard --logdir ./graph
+print("After deleting data")
 
-# train the network
-print("[INFO] training network...")
+sleep(5)
 
-with open('modelsummary.txt', 'w') as f:
-	with redirect_stdout(f):
-		model.summary()
-
-model.summary()
-
-# H = model.fit_generator(aug.flow(trainX, trainY, batch_size=BS),
-# 	validation_data=(testX, testY), steps_per_epoch=len(trainX) // BS,
-# 	epochs=EPOCHS, verbose=1) # verbose = 1
-
-H = model.fit_generator(aug.flow(trainX, trainY, batch_size=BS),
-	validation_data=(testX, testY), steps_per_epoch=len(trainX) // BS,
-	epochs=EPOCHS, verbose=1, callbacks=[tbcallback]) # verbose = 1
-
-# H = model.fit(x=trainX, y=trainY, batch_size=BS, 
-# 	epochs=EPOCHS, verbose=1,
-# 	validation_split=0.15, validation_data=(testX, testY))
-
-# H = model.fit(x=trainX, y=trainY, 
-# 	epochs=EPOCHS, verbose=1,
-# 	validation_data=(testX, testY), 
-# 	steps_per_epoch=len(trainX) // BS)
-
-
-
-# save the model to disk
-print("[INFO] serializing network...")
-model.save(args["model"])
-
-# plot the training loss and accuracy
-plt.style.use("ggplot")
-plt.figure()
-N = EPOCHS
-plt.plot(np.arange(0, N), H.history["loss"], label="train_loss")
-plt.plot(np.arange(0, N), H.history["val_loss"], label="val_loss")
-plt.plot(np.arange(0, N), H.history["acc"], label="train_acc")
-plt.plot(np.arange(0, N), H.history["val_acc"], label="val_acc")
-plt.title("Training Loss and Accuracy on Male/Female")
-plt.xlabel("Epoch #")
-plt.ylabel("Loss/Accuracy")
-plt.legend(loc="lower left")
-plt.savefig(args["plot"])
+print("trainX", trainX.shape)
+print("testX", testX.shape)
