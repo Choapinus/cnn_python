@@ -1,3 +1,9 @@
 barrido
 images
 santa_not_santa.model
+female.txt
+male.txt
+plot.png
+graph/
+pyimagesearch/__pycache__/
+lenet_model.model
