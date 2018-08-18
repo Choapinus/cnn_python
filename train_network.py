@@ -28,9 +28,9 @@ ap.add_argument("-d", "--dataset", required=True,
 	help="path to input dataset")
 ap.add_argument("-m", "--model", required=True,
 	help="path to output model")
-ap.add_argument("-n", "--n_images", type=int, required=False, default=1000,
+ap.add_argument("-n", "--n_images", type=int, required=False, default=5000,
 	help="path to output model")
-ap.add_argument("-e", "--epochs", type=int, required=False, default=200,
+ap.add_argument("-e", "--epochs", type=int, required=False, default=70,
 	help="epochs to do")
 ap.add_argument("-p", "--plot", type=str, default="plot.png",
 	help="path to output loss/accuracy plot")
@@ -39,8 +39,8 @@ args = vars(ap.parse_args())
 # initialize the number of epochs to train for, initia learning rate,
 # and batch size
 EPOCHS = args["epochs"] # 25
-INIT_LR = 1e-4
-BS = 40 # debe ser numero cuadrado sino toma menos imagenes
+INIT_LR = 1e-2
+BS = 20 # debe ser numero cuadrado sino toma menos imagenes
 
 # initialize the data and labels
 print("[INFO] loading " + str(args["n_images"]) + " images...")

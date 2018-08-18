@@ -1,0 +1,8 @@
+al cambiar el tamaño de los filtros tira error de memoria
+al aumentar el dense a x*2, tira error de memoria
+
+
+
+error:
+
+2018-05-16 17:00:49.402277: W tensorflow/core/common_runtime/bfc_allocator.cc:217] Allocator (GPU_0_bfc) ran out of memory trying to allocate 807.75MiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory is available.
