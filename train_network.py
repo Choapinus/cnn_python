@@ -29,7 +29,9 @@ ap.add_argument("-d", "--dataset", required=True,
 ap.add_argument("-m", "--model", required=True,
 	help="path to output model")
 ap.add_argument("-n", "--n_images", type=int, required=False, default=5000,
-	help="path to output model")
+	help="number of images per class to load")
+ap.add_argument("-s", "--split", type=float, required=False, default=0.2,
+	help="percent of images that should be in test")
 ap.add_argument("-e", "--epochs", type=int, required=False, default=200,
 	help="epochs to do")
 ap.add_argument("-p", "--plot", type=str, default="plot.png",
