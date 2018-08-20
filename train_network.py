@@ -107,7 +107,7 @@ print("[INFO] done with data and labels")
 # partition the data into training and testing splits using 75% of
 # the data for training and the remaining 25% for testing
 (trainX, testX, trainY, testY) = train_test_split(data,
-	labels, test_size=0.2, random_state=42)
+	labels, test_size=args["split"], random_state=42)
 
 print("[INFO] deleting stuff")
 
